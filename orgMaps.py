@@ -4,7 +4,7 @@ import uuid
 from marshSchema import phoneRecord, urlRecord, organizationRecord , addressRecord, emailRecord
 
 
-def orgmaker(z70, z72, rec_keys):
+def orgmaker(z70, z72, rec_keys, prefix):
     jsonRecords = []
     with open(z70, 'r', encoding='latin-1') as file:
         dictFile = DictReader(file, delimiter = '|')
@@ -15,8 +15,9 @@ def orgmaker(z70, z72, rec_keys):
             else:
                 stat = 'Inactive'
 
+            x = (addressNoteGetter(row['Z70_REC_KEY'].rstrip(), z72, rec_keys))
 
-            newRec = organizationRecord(code = row['Z70_REC_KEY'].rstrip(),
+            newRec = organizationRecord(code = prefix +row['Z70_REC_KEY'].rstrip(),
                                         name = row['Z70_VENDOR_NAME'],
                                         status = stat,
                                         addresses = addressMaker(row['Z70_REC_KEY'].rstrip(),z72, rec_keys),
@@ -24,12 +25,27 @@ def orgmaker(z70, z72, rec_keys):
                                         erpCode = row["Z70_ADDITIONAL_VENDOR_CODE"],
                                         emails = emailMaker(row['Z70_REC_KEY'].rstrip(),z72,rec_keys),
                                         urls = urlMaker(row['Z70_REC_KEY'].strip(),z72,rec_keys),
+                                        description = row['Z70_NOTE'],
                                         isVendor = True
                                         )
-
+            if  x is not None and len(x)> 1:
+                print(x)
+                newRec.description = newRec.description + x
             jsonRecords.append(newRec)
             print(newRec["name"])
     return jsonRecords
+
+def addressNoteGetter(code, file, rec_keys):
+    with open(file, 'r', encoding='latin-1') as file2:
+        dictFile = DictReader(file2, delimiter = '|')
+        export_list = []
+        for row in dictFile:
+
+            if row['Z72_REC_KEY 1'].rstrip() == code and row['Z72_REC_KEY 2'] in rec_keys:
+               if len(row['Z72_NOTE']) > 1:
+                addLine = row['Z72_NOTE']
+                export_list.append(addLine)
+        return("; ".join(export_list))
 
 def addressMaker(code,file,rec_keys):
     with open(file, 'r', encoding='latin-1') as file2:
@@ -96,7 +112,7 @@ def uuidgen(inst, code):
 
 if __name__ == "__main__":
 
-    x = orgmaker("orgs//uma_org_Z70.txt", "orgs//uma_org_address_Z72-txt_final_clean (2).txt", ["1", "3"])
+    x = orgmaker("orgs//mhc_org_Z70.txt", "orgs//mhc_org_address_Z72_2-txt_final_clean.txt", ["1", "3"], "MH")
     with open("testfile.txt", 'w', encoding='latin-1') as target:
         json.dump(x,target, indent=4)
 
