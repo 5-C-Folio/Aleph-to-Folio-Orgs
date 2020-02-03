@@ -3,7 +3,7 @@
 ### Requirements
 * Python 3.x
 * Warlock
-###Purpose
+### Purpose
 Takes an export of the Z70 and Z72 Aleph tables and combines them into
 ### Instructions
 1) Generate files from the Z70 and Z72 in csv format
