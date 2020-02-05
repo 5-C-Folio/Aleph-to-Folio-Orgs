@@ -17,8 +17,8 @@ def orgmaker(z70, z72, rec_keys, prefix):
 
             x = (addressNoteGetter(row['Z70_REC_KEY'].rstrip(), z72, rec_keys))
 
-            newRec = organizationRecord(code = prefix +row['Z70_REC_KEY'].rstrip(),
-                                        name = row['Z70_VENDOR_NAME'],
+            newRec = organizationRecord(code = prefix + row['Z70_REC_KEY'].rstrip(),
+                                        name =prefix + row['Z70_VENDOR_NAME'],
                                         status = stat,
                                         addresses = addressMaker(row['Z70_REC_KEY'].rstrip(),z72, rec_keys),
                                         phoneNumbers = phoneMaker(row['Z70_REC_KEY'].rstrip(),z72, rec_keys),
