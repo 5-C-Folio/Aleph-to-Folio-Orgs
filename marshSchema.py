@@ -97,8 +97,7 @@ organizationSchema = {
       "description": "The list of aliases for this organization",
       "type": "array",
       "items": {
-        "type": "object",
-        "$ref": "alias.json"
+        "type": "object"
       }
     },
     "addresses": {
@@ -613,8 +612,29 @@ phoneSchema = {
     "phoneNumber"
   ]
 }
+
+aliasSchema =  {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "An organization alias",
+  "type": "object",
+  "properties": {
+    "value": {
+      "description": "The unique name of this alias",
+      "type": "string"
+    },
+    "description": {
+      "description": "The description of this alias",
+      "type": "string"
+    }
+  },
+  "additionalProperties": False,
+  "required": [
+    "value"
+  ]
+}
 emailRecord = warlock.model_factory(emailSchema)
 phoneRecord = warlock.model_factory(phoneSchema)
 addressRecord = warlock.model_factory(addressSchema)
 organizationRecord = warlock.model_factory(organizationSchema)
 urlRecord = warlock.model_factory(urlSchema)
+aliasRecord = warlock.model_factory(aliasSchema)
