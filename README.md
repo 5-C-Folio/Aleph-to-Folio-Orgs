@@ -19,6 +19,15 @@ Z72_VENDOR_STATE,Z72_VENDOR_POSTAL_CODE, Z72_VENDOR_COUNTRY,Z72_NOTE
 ```
 
 6) before running, remove BOM or Z70 will not match
+if running for an org with coral
+7)  add college abbreviations to org names and codes and merge notestext and accountsText
+8) run coral_orgs.py Be midful of alias delimiters
+```
+required fields in Coral:
+org code (from alias- see sql script), name, note text (combined from notes and accounts)
+Is vendor, Alieses
+```
+9)  use orgmerge script to combine coral orgs with aleph vendors; add unique coral orgs; add unique aleph vendors
 
 ### Known Issues
 * can only take address type 1 or address type 3
