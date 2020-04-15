@@ -31,11 +31,13 @@ def main(aleph_file,coral_file):
     return exportlist
 if __name__ == '__main__':
     with open ('um_merged_filev3.txt', 'w') as merged:
-        filemerge = main('UMA_aleph_orgsv3.txt','sc_coralfilev2.txt')
+        filemerge = main('UMA_aleph_orgsv3.txt','um_coralfilev3.txt')
+        #json.dump(filemerge,merged, indent=4)
         for row in filemerge:
             x = json.dumps(row)
             x = x + "\n"
             merged.write(x)
+
 
 
 

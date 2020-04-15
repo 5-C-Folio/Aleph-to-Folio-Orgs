@@ -6,8 +6,8 @@ addressSchema ={
   "type": "object",
   "properties": {
     "id": {
-      "description": "UUID",
-      "$ref": "../../common/schemas/uuid.json"
+      "description": "UUID"
+
     },
     "addressLine1": {
       "description": "The first line of this address",
@@ -64,8 +64,8 @@ organizationSchema = {
   "type": "object",
   "properties": {
     "id": {
-      "description": "The unique UUID for this organization",
-      "$ref": "../../common/schemas/uuid.json"
+      "description": "The unique UUID for this organization"
+
     },
     "name": {
       "description": "The name of this organization",
@@ -137,8 +137,7 @@ organizationSchema = {
       "description": "An array of contact record IDs",
       "type": "array",
       "items": {
-        "description": "UUID of a contact record",
-        "$ref": "../../common/schemas/uuid.json"
+        "description": "UUID of a contact record"
       }
     },
     "agreements": {
@@ -416,8 +415,8 @@ organizationSchema = {
       "description": "The list of interfaces assigned to this organization",
       "type": "array",
       "items": {
-        "description": "UUID of an interface record",
-        "$ref": "../../common/schemas/uuid.json"
+        "description": "UUID of an interface record"
+
       }
     },
     "accounts": {
@@ -632,9 +631,172 @@ aliasSchema =  {
     "value"
   ]
 }
+
+interfaceSchema = {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "An interface record",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique id of this interface",
+      "$ref": "../../common/schemas/uuid.json"
+    },
+    "name": {
+      "description": "The name of this interface",
+      "type": "string"
+    },
+    "uri": {
+      "description": "The URI of this interface",
+      "type": "string"
+    },
+    "notes": {
+      "description": "The notes for this interface",
+      "type": "string"
+    },
+    "available": {
+      "description": "The availability setting for this interface",
+      "type": "boolean"
+    },
+    "deliveryMethod": {
+      "description": "The delivery method for this interface",
+      "type": "string",
+      "enum": [
+        "Online",
+        "FTP",
+        "Email",
+        "Other"
+      ]
+    },
+    "statisticsFormat": {
+      "description": "The format of the statistics for this interface",
+      "type": "string"
+    },
+    "locallyStored": {
+      "description": "The locally stored location of this interface",
+      "type": "string"
+    },
+    "onlineLocation": {
+      "description": "The online location for this interface",
+      "type": "string"
+    },
+    "statisticsNotes": {
+      "description": "The notes regarding the statistics for this interface",
+      "type": "string"
+    },
+    "type": {
+      "description": "Interface types",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "interface_type.json"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "$ref": "../../../raml-util/schemas/metadata.schema",
+      "readonly": True
+    }
+  },
+  "additionalProperties": False
+}
+
+contactSchema = {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A contact record",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique id of this contact",
+      "$ref": "../../common/schemas/uuid.json"
+    },
+    "prefix": {
+      "description": "The prefix for this contact person",
+      "type": "string"
+    },
+    "firstName": {
+      "description": "The first name of this contact person",
+      "type": "string"
+    },
+    "lastName": {
+      "description": "The last name of this contact person",
+      "type": "string"
+    },
+    "language": {
+      "description": "The preferred language for this contact person",
+      "type": "string"
+    },
+    "notes": {
+      "description": "The notes for this contact person",
+      "type": "string"
+    },
+    "phoneNumbers": {
+      "id": "phoneNumbers",
+      "description": "The list of phone numbers for this contact person",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "phone_number.json"
+      }
+    },
+    "emails": {
+      "id": "emailAddresses",
+      "description": "The list of emails for this contact person",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "email.json"
+      }
+    },
+    "addresses": {
+      "id": "addresses",
+      "description": "The list of addresses for this contact person",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "address.json"
+      }
+    },
+    "urls": {
+      "id": "urls",
+      "description": "The list of URLs for this contact person",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "url.json"
+      }
+    },
+    "categories": {
+      "id": "contactCategory",
+      "description": "The list of contact categories associated with this organization contact person",
+      "type": "array",
+      "items": {
+        "description": "UUID of the contact category",
+        "$ref": "../../common/schemas/uuid.json"
+      }
+    },
+    "inactive": {
+      "description": "Used to indicate that a contact is no longer active",
+      "type": "boolean",
+      "default": False
+    },
+    "metadata": {
+      "type": "object",
+      "$ref": "../../../raml-util/schemas/metadata.schema",
+      "readonly": True
+    }
+  },
+  "additionalProperties": False,
+  "required": [
+    "firstName",
+    "lastName"
+  ]
+}
+
 emailRecord = warlock.model_factory(emailSchema)
 phoneRecord = warlock.model_factory(phoneSchema)
 addressRecord = warlock.model_factory(addressSchema)
 organizationRecord = warlock.model_factory(organizationSchema)
 urlRecord = warlock.model_factory(urlSchema)
 aliasRecord = warlock.model_factory(aliasSchema)
+interfaceRecord = warlock.model_factory(interfaceSchema)
+contactRecord = warlock.model_factory(contactSchema)
