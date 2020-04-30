@@ -17,10 +17,16 @@ def main(aleph_file,coral_file):
         coral_index.append(c_record['code'])
 
     for coral_record in coral_json:
+
         if coral_record['code'] in aleph_index:
+
             aleph_record = aleph_json[aleph_index.index(coral_record['code'])]
+            print(f" matching coral {coral_record['code']} to {aleph_record['code']}")
             aleph_record["aliases"] = coral_record['aliases']
             aleph_record['description'] = aleph_record['description'] + ' \n ' + coral_record['description']
+            aleph_record['interfaces']=coral_record['interfaces']
+            if len(coral_record['contacts']) >0 :
+                aleph_record['contacts'] = coral_record['contacts']
             exportlist.append(aleph_record)
         else:
             exportlist.append(coral_record)
@@ -30,12 +36,12 @@ def main(aleph_file,coral_file):
             exportlist.append(a_record)
     return exportlist
 if __name__ == '__main__':
-    with open ('um_merged_filev3.txt', 'w') as merged:
-        filemerge = main('UMA_aleph_orgsv3.txt','um_coralfilev3.txt')
+    with open ('umfinal//um_merged_filev65nsp.txt', 'w') as merged:
+        filemerge = main('umfinal//um_aleph_orgsv5.txt','umfinal//um_coralfilev4.txt')
         #json.dump(filemerge,merged, indent=4)
         for row in filemerge:
             x = json.dumps(row)
-            x = x + "\n"
+            x = x + ",\n"
             merged.write(x)
 
 
