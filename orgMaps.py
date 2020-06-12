@@ -2,6 +2,7 @@ from csv import DictReader
 import json
 import uuid
 from marshSchema import phoneRecord, urlRecord, organizationRecord, addressRecord, emailRecord
+from sys import  argv
 
 
 def categories_getter(value):
@@ -17,13 +18,15 @@ def categories_getter(value):
 
 def orgmaker(z70, z72, prefix):
     jsonRecords = []
-    with open(z70, 'r', encoding='latin-1') as file:
+    with open(z70, 'r', encoding='latin-1', newline='\n') as file:
         dictFile = DictReader(file, delimiter = '|')
         for row in dictFile:
             stat = 'Active'
             Z72_file = (Z72_reader(row['Z70_REC_KEY'].rstrip(),z72))
             folio_description = (addressNoteGetter(Z72_file))
-            newRec = organizationRecord(code=prefix + row['Z70_REC_KEY'].rstrip(),
+            newRec = organizationRecord(
+                                        id = None,
+                                        code=prefix + row['Z70_REC_KEY'].rstrip(),
                                         name=prefix + " " + row['Z70_VENDOR_NAME'],
                                         status=stat,
                                         addresses=addressMaker(Z72_file),
@@ -35,10 +38,9 @@ def orgmaker(z70, z72, prefix):
                                         isVendor=True
                                         )
             if folio_description is not None and len(folio_description) > 1:
-                print(folio_description)
-                newRec.description = newRec.description +' \n' + folio_description
+                newRec.description = newRec.description + ' \n' + folio_description
             jsonRecords.append(newRec)
-            print(newRec["name"])
+            print(newRec.code)
     return jsonRecords
 
 
@@ -76,7 +78,7 @@ def addressMaker(z72_file):
                                 categories=categories
                                 )
         export_list.append(addLine)
-        print(export_list)
+
     return export_list
 
 
@@ -122,7 +124,22 @@ def uuidgen(inst, code):
 
 
 if __name__ == "__main__":
-
-    x = orgmaker("orgs//Rnd2 orgs//MHC_Z70_RAW.txt", "orgs//Rnd2 orgs//Cleaned Z72//MHC_Z72-Cleaned_V2.csv",  "MH")
-    with open("testfile.txt", 'w', encoding='latin-1', newline="\n") as target:
-        json.dump(x, target, indent=4)
+    try:
+        if argv[1] == 'help':
+            print('''select the path of the 7Z0 file, the cleaned Z72 file, and the Organization Prefix ''')
+            exit()
+        else:
+            z70 = str(argv[1])
+            z72 = str(argv[2])
+    except IndexError:
+        print('invalid commands; select the path of the 7Z0 file, the cleaned Z72 file, and the Organization Prefix  ')
+        exit()
+    code = input("input the two character organization code> ")
+    conf = input(f"you have selected {z70} as the Z70 file, {z72} as the Z72 file and {code} as the organization code.> "
+                 f"type 'yes' for correct, any other key to exit> ")
+    if conf in ['Yes', 'yes', 'Y', 'y']:
+        x = orgmaker(z70, z72, code)
+        # x = orgmaker("orgs//AlephRnd2 orgs//AMH_Z70_RAW.txt", "orgs//AlephRnd2 orgs//Cleaned Z72//AMH_Z72-Cleaned_V2.csv",  "AC")
+        with open(f"{code}final//{code}_aleph_orgsv1.txt", 'w', encoding='latin-1', newline="\n") as target:
+            json.dump(x, target, indent=4)
+            print(f"print file written to {target.name}")
