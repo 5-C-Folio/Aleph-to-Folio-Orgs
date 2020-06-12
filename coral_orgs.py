@@ -73,12 +73,13 @@ if __name__ == '__main__':
     except IndexError:
         print("select select the Cleaned Aleph org file, the contacts file and the interfaces file")
         exit()
+    code = input("input the two character organization code> ")
     conf = input(f'''You have selected: \n {alephFile} as the Aleph Organization file \n {contactsFile} as the contact file \n {interfaceFile} as the interface file \n if this is correct, type "yes to continue, or any key to exit''')
     #coral = coral_create('orgs\\Coral\\smith_organizations-Cleaned-v1.csv','orgs/Contacts/sc_contacts_v1_FOLIO_IDs.csv',
                          #'orgs/Coral/sc_interfaces_v2_FOLIO_IDs.csv')
     if conf in ["yes", "Yes", "Y", 'y']:
         coral = coral_create(alephFile, contactsFile, interfaceFile)
-        with open("scfinal//sc_coralfilev4.txt", 'w', encoding='latin-1', newline="\n") as target:
+        with open(f"{code}final//{code}_coralfilev4.txt", 'w', encoding='latin-1', newline="\n") as target:
             json.dump(coral, target, indent=4)
             print(f"writing to {target.name}")
     else:
