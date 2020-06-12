@@ -1,15 +1,18 @@
 from csv import DictReader
-from marshSchema import urlRecord, organizationRecord, aliasRecord
+from marshSchema import  organizationRecord, aliasRecord
 import json
 from sys import argv
+
 def string_to_dict(string):
-    sp_string = string.split(';')
+    #todo smith uses , to split- umass ;
+    sp_string = string.split(',')
     altList = []
     for row in sp_string:
         sprow = row.split(':')
         altname = aliasRecord( value=sprow[1].lstrip(), description=sprow[0])
         altList.append(altname)
     return altList
+
 
 def coral_getter(contact_file, orgCode):
     c_list = []
@@ -25,8 +28,6 @@ def coral_getter(contact_file, orgCode):
                 exit()
 
         return c_list
-
-
 
 
 def coral_create(main_file, contact_file, interface_file):
@@ -61,11 +62,28 @@ def coral_create(main_file, contact_file, interface_file):
 
 
 if __name__ == '__main__':
-    coral = coral_create('orgs\\Coral\\umass_organizations-Cleaned-v1.csv','orgs/Contacts/um_contacts_v3.csv',
-                         'orgs/Coral/um_interfaces_v3_FOLIO_IDS-csv.csv')
-    with open("um_coralfilev4.txt", 'w', encoding='latin-1', newline="\n") as target:
-        json.dump(coral, target, indent=4)
-
+    try:
+        if argv[1] =='help':
+            print("select select the Cleaned Aleph org file, the contacts file and the interfaces file")
+            exit()
+        else:
+            alephFile = argv[1]
+            contactsFile = argv[2]
+            interfaceFile = argv[3]
+    except IndexError:
+        print("select select the Cleaned Aleph org file, the contacts file and the interfaces file")
+        exit()
+    conf = input(f'''You have selected: \n {alephFile} as the Aleph Organization file \n {contactsFile} as the contact file \n {interfaceFile} as the interface file \n if this is correct, type "yes to continue, or any key to exit''')
+    #coral = coral_create('orgs\\Coral\\smith_organizations-Cleaned-v1.csv','orgs/Contacts/sc_contacts_v1_FOLIO_IDs.csv',
+                         #'orgs/Coral/sc_interfaces_v2_FOLIO_IDs.csv')
+    if conf in ["yes", "Yes", "Y", 'y']:
+        coral = coral_create(alephFile, contactsFile, interfaceFile)
+        with open("scfinal//sc_coralfilev4.txt", 'w', encoding='latin-1', newline="\n") as target:
+            json.dump(coral, target, indent=4)
+            print(f"writing to {target.name}")
+    else:
+        print("exiting")
+        exit()
 
 
 
