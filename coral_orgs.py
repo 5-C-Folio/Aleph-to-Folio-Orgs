@@ -1,5 +1,5 @@
 from csv import DictReader
-from marshSchema import  organizationRecord, aliasRecord
+from FolioSchemaModels import  organizationRecord, aliasRecord
 import json
 from sys import argv
 
