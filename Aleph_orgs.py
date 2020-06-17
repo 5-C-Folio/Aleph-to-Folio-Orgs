@@ -9,10 +9,10 @@ def categories_getter(value):
     # currently is only designed to have type 1 or 3 in the export file. Should be controlled in Z72_reader function
     if value["Z72_REC_KEY 2"] == "1":
         # uuid for general
-        categories = ["7fb87c4c-1fd0-45fb-9c78-3a372ebfbecf"]
+        categories = ["9c321c44-774c-491f-9012-2024b93cb453"]
     elif value["Z72_REC_KEY 2"] == "3":
         # uuid for remittance
-        categories = ["618084d5-57ed-49a8-8e91-bae476e1d247"]
+        categories = ["0172e314-d3c1-437f-9174-b730844197fa"]
     return categories
 
 
