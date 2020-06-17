@@ -5,7 +5,7 @@ from sys import argv
 
 def string_to_dict(string):
     #todo smith uses , to split- umass ;
-    sp_string = string.split(',')
+    sp_string = string.split(';')
     altList = []
     for row in sp_string:
         sprow = row.split(':')
@@ -64,24 +64,28 @@ def coral_create(main_file, contact_file, interface_file):
 if __name__ == '__main__':
     try:
         if argv[1] =='help':
-            print("select select the Cleaned Aleph org file, the contacts file and the interfaces file")
+            print("select select the Cleaned Coral org file, the contacts file and the interfaces file")
             exit()
         else:
-            alephFile = argv[1]
+            coralFile = argv[1]
             contactsFile = argv[2]
             interfaceFile = argv[3]
     except IndexError:
-        print("select select the Cleaned Aleph org file, the contacts file and the interfaces file")
+        print("select select the Cleaned coral org file, the contacts file and the interfaces file")
         exit()
     code = input("input the two character organization code> ")
-    conf = input(f'''You have selected: \n {alephFile} as the Aleph Organization file \n {contactsFile} as the contact file \n {interfaceFile} as the interface file \n if this is correct, type "yes to continue, or any key to exit''')
+    conf = input(f'''You have selected: \n {coralFile} as the Coral Organization file \n {contactsFile} as the contact file \n {interfaceFile} as the interface file \n if this is correct, type "yes to continue, or any key to exit''')
     #coral = coral_create('orgs\\Coral\\smith_organizations-Cleaned-v1.csv','orgs/Contacts/sc_contacts_v1_FOLIO_IDs.csv',
                          #'orgs/Coral/sc_interfaces_v2_FOLIO_IDs.csv')
     if conf in ["yes", "Yes", "Y", 'y']:
-        coral = coral_create(alephFile, contactsFile, interfaceFile)
-        with open(f"{code}final//{code}_coralfilev4.txt", 'w', encoding='latin-1', newline="\n") as target:
-            json.dump(coral, target, indent=4)
-            print(f"writing to {target.name}")
+        coral = coral_create(coralFile, contactsFile, interfaceFile)
+        try:
+            with open(f"{code}final//{code}_coralfile.txt", 'w', encoding='latin-1', newline="\n") as target:
+                json.dump(coral, target, indent=4)
+                print(f"writing to {target.name}")
+        except FileNotFoundError:
+            print(f'{code}final directory does not exit')
+            exit()
     else:
         print("exiting")
         exit()
