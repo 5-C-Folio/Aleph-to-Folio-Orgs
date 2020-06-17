@@ -2,7 +2,7 @@ from csv import DictReader
 import json
 import uuid
 from FolioSchemaModels import phoneRecord, urlRecord, organizationRecord, addressRecord, emailRecord
-from sys import  argv
+from sys import argv
 
 
 def categories_getter(value):
@@ -112,7 +112,9 @@ def emailMaker(z72_file):
 def urlMaker(z72_file):
         exportList = []
         for value in z72_file:
-            url = urlRecord(value=value['Z72_VENDOR_IP'], isPrimary=True)
+            url = urlRecord(value=value['Z72_VENDOR_IP'],
+                            categories=["9c321c44-774c-491f-9012-2024b93cb453"],
+                            isPrimary=True)
             if len(url["value"]) > 1:
                 exportList.append(url)
         return exportList
