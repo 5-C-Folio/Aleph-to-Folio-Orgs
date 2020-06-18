@@ -73,7 +73,8 @@ organizationSchema = {
     },
     "code": {
       "description": "The code for this organization",
-      "type": "string"
+      "type": "string",
+      "pattern": "^\\S+$"
     },
     "description": {
       "description": "The description for this organization",
