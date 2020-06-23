@@ -26,7 +26,7 @@ def orgmaker(z70, z72, prefix):
             folio_description = (addressNoteGetter(Z72_file))
             newRec = organizationRecord(
                                         id = None,
-                                        code=prefix + row['Z70_REC_KEY'].rstrip(),
+                                        code=prefix + row['Z70_REC_KEY'].replace(" ", ""),
                                         name=prefix + " " + row['Z70_VENDOR_NAME'],
                                         status=stat,
                                         addresses=addressMaker(Z72_file),
@@ -142,6 +142,10 @@ if __name__ == "__main__":
     if conf in ['Yes', 'yes', 'Y', 'y']:
         x = orgmaker(z70, z72, code)
         # x = orgmaker("orgs//AlephRnd2 orgs//AMH_Z70_RAW.txt", "orgs//AlephRnd2 orgs//Cleaned Z72//AMH_Z72-Cleaned_V2.csv",  "AC")
-        with open(f"final//{code}_aleph_orgsv.txt", 'w', encoding='latin-1', newline="\n") as target:
-            json.dump(x, target, indent=4)
-            print(f"print file written to {target.name}")
+        try:
+            with open(f"{code}final//{code}_aleph_orgsv.txt", 'w', encoding='latin-1', newline="\n") as target:
+                json.dump(x, target, indent=4)
+                print(f"print file written to {target.name}")
+        except FileNotFoundError:
+            print(f"{code}final directory doesn't exist")
+            exit()

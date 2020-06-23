@@ -31,12 +31,16 @@ def coral_getter(contact_file, orgCode):
 
 
 def coral_create(main_file, contact_file, interface_file):
+
     with open(main_file, 'r', encoding='utf8') as dictfile:
         coral_orgs = DictReader(dictfile)
         recList = []
         for org in coral_orgs:
             c_list = coral_getter(contact_file, org['orgCode'])
-            i_list = coral_getter(interface_file, org['orgCode'])
+            if interface_file != "NULL":
+                i_list = coral_getter(interface_file, org['orgCode'])
+            else:
+                i_list = []
             print (f"{len(c_list)} contact created and {len(i_list)} interfaces created for {org['name']}")
             if org['is Vendor'] == 'True':
                 isVen = True
@@ -44,7 +48,7 @@ def coral_create(main_file, contact_file, interface_file):
                 isVen = False
             newRec = organizationRecord(
                                         id=None,
-                                        code=org['orgCode'],
+                                        code=org['orgCode'].replace(" ", ""),
                                         name=org['name'],
                                         status='Active',
                                         description=org['noteText'],

@@ -1,5 +1,5 @@
 import json
-
+from sys import argv
 
 def json_read(file):
     with open(file, 'r') as coralFile:
@@ -13,6 +13,7 @@ def main(aleph_file,coral_file):
     coral_index = []
     exportlist= []
     coral_json = json_read(coral_file)
+
     for c_record in coral_json:
         coral_index.append(c_record['code'])
 
@@ -36,13 +37,35 @@ def main(aleph_file,coral_file):
             exportlist.append(a_record)
     return exportlist
 if __name__ == '__main__':
-    with open ('umfinal//um_merged_filev65nsp.txt', 'w') as merged:
-        filemerge = main('umfinal//um_aleph_orgsv5.txt','umfinal//um_coralfilev4.txt')
-        #json.dump(filemerge,merged, indent=4)
-        for row in filemerge:
-            x = json.dumps(row)
-            x = x + ",\n"
-            merged.write(x)
+    try:
+        if argv[1] == 'help':
+            print("select select the aleph file and the coral file ")
+            exit()
+        else:
+            aleph_file = argv[1]
+            coral_file = argv[2]
+
+    except IndexError:
+        print("select select the aleph file and the coral file ")
+        exit()
+    code = input("input the two character organization code> ")
+    conf = input(f'''You have selected: {code}final as the write directory \n {aleph_file} as the Aleph vendor file \n {coral_file} as the Coral Organization file \n "yes to continue, or any key to exit> ''')
+    if conf in ["yes", "Yes", "Y", 'y']:
+        try:
+            with open (f'{code}final//{code}_organization_merged4.txt', 'w') as merged:
+                filemerge = main(aleph_file, coral_file)
+
+            #json.dump(filemerge,merged, indent=4)
+                for row in filemerge:
+                    x = json.dumps(row)
+                    x = x + ",\n"
+                    merged.write(x)
+        except FileNotFoundError:
+            print("invalid write location")
+            exit()
+    else:
+        print ("exiting")
+        exit()
 
 
 
