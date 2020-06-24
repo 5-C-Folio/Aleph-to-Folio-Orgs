@@ -137,7 +137,7 @@ if __name__ == "__main__":
         print('invalid commands; select the path of the 7Z0 file, the cleaned Z72 file, and the Organization Prefix  ')
         exit()
     code = input("input the two character organization code> ")
-    conf = input(f"you have selected {z70} as the Z70 file, {z72} as the Z72 file and {code} as the organization code.> "
+    conf = input(f"you have selected {z70} as the Z70 file \n {z72} as the Z72 file \n {code} as the organization code. > "
                  f"type 'yes' for correct, any other key to exit> ")
     if conf in ['Yes', 'yes', 'Y', 'y']:
         x = orgmaker(z70, z72, code)

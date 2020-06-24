@@ -24,7 +24,7 @@ def coral_getter(contact_file, orgCode):
                     if len(row['ID']) > 1:
                         c_list.append(row["ID"])
             except KeyError:
-                print(f'invalid column headers in file {contact_file}')
+                print(f'invalid column headers in file {contact_file}. Headers should be "orgCode" and "ID"  \n fields used: {c_dict.fieldnames}')
                 exit()
 
         return c_list
@@ -37,7 +37,7 @@ def coral_create(main_file, contact_file, interface_file):
         recList = []
         for org in coral_orgs:
             c_list = coral_getter(contact_file, org['orgCode'])
-            if interface_file != "NULL":
+            if interface_file.lower() not in ["null", 'n', 'none']:
                 i_list = coral_getter(interface_file, org['orgCode'])
             else:
                 i_list = []
