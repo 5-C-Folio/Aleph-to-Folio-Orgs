@@ -143,9 +143,13 @@ if __name__ == "__main__":
         x = orgmaker(z70, z72, code)
         # x = orgmaker("orgs//AlephRnd2 orgs//AMH_Z70_RAW.txt", "orgs//AlephRnd2 orgs//Cleaned Z72//AMH_Z72-Cleaned_V2.csv",  "AC")
         try:
-            with open(f"{code}final//{code}_aleph_orgsv.txt", 'w', encoding='latin-1', newline="\n") as target:
-                json.dump(x, target, indent=4)
-                print(f"print file written to {target.name}")
+            target = open(f"{code}final//{code}_aleph_orgsv.txt", 'w', encoding='latin-1', newline="\n")
+                #json.dump(x, target, indent=4)
+            for row in x:
+                y = json.dumps(row)
+                y = y + ",\n"
+                target.write(y)
+            print(f"print file written to {target.name}")
         except FileNotFoundError:
             print(f"{code}final directory doesn't exist")
             exit()
